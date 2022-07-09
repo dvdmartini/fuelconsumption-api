@@ -1,26 +1,31 @@
 package com.fuelconsumption.management.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fuelconsumption.management.controllers.dtos.FuelConsumptionDto;
-import com.fuelconsumption.management.models.FuelConsumptionModel;
+import com.fuelconsumption.management.enums.FuelTypeEnum;
 import com.fuelconsumption.management.services.FuelConsumptionService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @author david.martini
  */
 @SpringBootTest
+@AutoConfigureMockMvc
 public class FuelConsumptionControllerTest {
 
     @Mock
@@ -29,6 +34,12 @@ public class FuelConsumptionControllerTest {
     @InjectMocks
     private FuelConsumptionController fuelConsumptionController;
 
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper mapper;
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
@@ -36,37 +47,80 @@ public class FuelConsumptionControllerTest {
 
 
     @Test
-    public void ShouldCreateNewFuelConsumption() {
+    public void ShouldCreateNewFuelConsumption() throws Exception {
+        FuelConsumptionDto fuelConsumptionDto = new FuelConsumptionDto();
+        fuelConsumptionDto.setFuelType(FuelTypeEnum.DIESEL);
+        fuelConsumptionDto.setDate(LocalDate.now());
+        fuelConsumptionDto.setVolume(25.0);
+        fuelConsumptionDto.setValue(2.5);
+        mockMvc.perform(post("/fuel-consumption")
+                .content(mapper.writeValueAsString(fuelConsumptionDto))
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+    }
 
-    FuelConsumptionDto fuelConsumptionDto = new FuelConsumptionDto();
+    @Test
+    public void ShouldNotCreateNewFuelConsumptionMissingFuelType() throws Exception {
+        FuelConsumptionDto fuelConsumptionDto = new FuelConsumptionDto();
         fuelConsumptionDto.setFuelType(null);
         fuelConsumptionDto.setDate(LocalDate.now());
         fuelConsumptionDto.setVolume(25.0);
         fuelConsumptionDto.setValue(2.5);
-
-
-        FuelConsumptionModel fuelConsumptionModel = new FuelConsumptionModel();
-
-        BeanUtils.copyProperties( fuelConsumptionDto, fuelConsumptionModel);
-        Mockito.when(fuelConsumptionService.save(fuelConsumptionModel)).thenReturn(fuelConsumptionModel);
-        ResponseEntity<Object> fuelConsumptionReturn = fuelConsumptionController.saveFuelConsumption(fuelConsumptionDto);
-
-        Assertions.assertEquals(HttpStatus.CREATED, fuelConsumptionReturn.getStatusCode());
+        mockMvc.perform(post("/fuel-consumption")
+                .content(mapper.writeValueAsString(fuelConsumptionDto))
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
 
     }
 
-//    @Test
-//    public void ShouldNotCreateNewFuelConsumptionMissingFuelType() {
-//        fuelConsumptionDto.setFuelType(null);
-//
-//        FuelConsumptionModel fuelConsumptionModel = new FuelConsumptionModel();
-//
-//        BeanUtils.copyProperties(fuelConsumptionDto, fuelConsumptionModel);
-//        Mockito.when(fuelConsumptionService.save(fuelConsumptionModel)).thenReturn(fuelConsumptionModel);
-//        ResponseEntity<Object> fuelConsumptionReturn = fuelConsumptionController.saveFuelConsumption(fuelConsumptionDto);
-//
-//        Assertions.assertEquals(HttpStatus.BAD_REQUEST, fuelConsumptionReturn.getStatusCode());
-//
-//    }
+    @Test
+    public void ShouldNotCreateNewFuelConsumptionMissingDate() throws Exception {
+        FuelConsumptionDto fuelConsumptionDto = new FuelConsumptionDto();
+        fuelConsumptionDto.setFuelType(FuelTypeEnum.DIESEL);
+        fuelConsumptionDto.setDate(null);
+        fuelConsumptionDto.setVolume(25.0);
+        fuelConsumptionDto.setValue(2.5);
+        mockMvc.perform(post("/fuel-consumption")
+                .content(mapper.writeValueAsString(fuelConsumptionDto))
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+
+    }
+
+    @Test
+    public void ShouldNotCreateNewFuelConsumptionMissingVolume() throws Exception {
+        FuelConsumptionDto fuelConsumptionDto = new FuelConsumptionDto();
+        fuelConsumptionDto.setFuelType(FuelTypeEnum.DIESEL);
+        fuelConsumptionDto.setDate(LocalDate.now());
+        fuelConsumptionDto.setVolume(null);
+        fuelConsumptionDto.setValue(2.5);
+        mockMvc.perform(post("/fuel-consumption")
+                .content(mapper.writeValueAsString(fuelConsumptionDto))
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+
+    }
+    @Test
+    public void ShouldNotCreateNewFuelConsumptionMissingFuelValue() throws Exception {
+        FuelConsumptionDto fuelConsumptionDto = new FuelConsumptionDto();
+        fuelConsumptionDto.setFuelType(FuelTypeEnum.DIESEL);
+        fuelConsumptionDto.setDate(LocalDate.now());
+        fuelConsumptionDto.setVolume(25.0);
+        fuelConsumptionDto.setValue(null);
+        mockMvc.perform(post("/fuel-consumption")
+                .content(mapper.writeValueAsString(fuelConsumptionDto))
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+
+    }
+
+    @Test
+    public void ShouldGetAllFuelConsumptionGroupByMonth() throws Exception{
+        mockMvc.perform(get("/fuel-consumption/get-all-fuel"))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    public void ShouldGetErrorWithWrongUrl() throws Exception{
+        mockMvc.perform(get("/fuel-consumption/get-all-fuels"))
+                .andExpect(status().isNotFound());
+
+    }
 
 }
