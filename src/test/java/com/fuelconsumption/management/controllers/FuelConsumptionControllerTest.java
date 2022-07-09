@@ -3,11 +3,8 @@ package com.fuelconsumption.management.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fuelconsumption.management.controllers.dtos.FuelConsumptionDto;
 import com.fuelconsumption.management.enums.FuelTypeEnum;
-import com.fuelconsumption.management.services.FuelConsumptionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,12 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class FuelConsumptionControllerTest {
-
-    @Mock
-    private FuelConsumptionService fuelConsumptionService;
-
-    @InjectMocks
-    private FuelConsumptionController fuelConsumptionController;
 
     @Autowired
     private MockMvc mockMvc;
@@ -96,6 +87,7 @@ public class FuelConsumptionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
 
     }
+
     @Test
     public void ShouldNotCreateNewFuelConsumptionMissingFuelValue() throws Exception {
         FuelConsumptionDto fuelConsumptionDto = new FuelConsumptionDto();
@@ -110,14 +102,14 @@ public class FuelConsumptionControllerTest {
     }
 
     @Test
-    public void ShouldGetAllFuelConsumptionGroupByMonth() throws Exception{
+    public void ShouldGetAllFuelConsumptionGroupByMonth() throws Exception {
         mockMvc.perform(get("/fuel-consumption/get-all-fuel"))
                 .andExpect(status().isOk());
 
     }
 
     @Test
-    public void ShouldGetErrorWithWrongUrl() throws Exception{
+    public void ShouldGetErrorWithWrongUrl() throws Exception {
         mockMvc.perform(get("/fuel-consumption/get-all-fuels"))
                 .andExpect(status().isNotFound());
 

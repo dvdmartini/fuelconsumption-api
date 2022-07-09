@@ -1,7 +1,7 @@
 package com.fuelconsumption.management.services;
 
-import com.fuelconsumption.management.controllers.dtos.FuelTypeResponseDto;
 import com.fuelconsumption.management.controllers.dtos.FuelConsumptionResponseDto;
+import com.fuelconsumption.management.controllers.dtos.FuelTypeResponseDto;
 import com.fuelconsumption.management.enums.FuelTypeEnum;
 import com.fuelconsumption.management.models.FuelConsumptionModel;
 import com.fuelconsumption.management.repositories.FuelConsumptionRepository;
