@@ -18,7 +18,7 @@ This objective of this project is create fuel consumption management application
 
 For use this API you need follow the steps below:
 
-Any paramether wrong will receive an Bad_Request HTTP.
+Any parameter wrong will receive an Bad_Request HTTP.
 
 ![image](https://user-images.githubusercontent.com/49644607/178124762-9438cd53-ce69-4c91-acb4-2017da38e164.png)
 
