@@ -2,7 +2,25 @@
 
 For starts this project you need install Docker and start a MySQL docker Image.
 
+Open the terminal and follow the steps:
+
 ``` sudo docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root --name mysql -d mysql:8.0 ```
+
+Find the container Id:
+
+``` sudo docker ps -a ```
+
+Access the container:
+
+``` sudo docker exec -it {idDoContainer} bin/bash ```
+
+In docker:
+```  mysql -u root -p ```
+
+**Password: root**
+
+In mysql, create a database:
+``` create database FuelConsumption; ```
 
 After that is just run the project.
 
