@@ -6,7 +6,7 @@ For starts this project you need install Docker and start a MySQL docker Image.
 
 After that is just run the project.
 
-This objective os this project is create fuel consumption management application (API) for small transportation company.
+This objective of this project is create fuel consumption management application (API) for small transportation company.
 
 # Technology Used
 * Spring Boot 2.7.1
@@ -18,11 +18,11 @@ This objective os this project is create fuel consumption management application
 
 For use this API you need follow the steps below:
 
-Any paramether wrong will receibe an Bad_Request HTTP.
+Any paramether wrong will receive an Bad_Request HTTP.
 
 ![image](https://user-images.githubusercontent.com/49644607/178124762-9438cd53-ce69-4c91-acb4-2017da38e164.png)
 
-* JSON Formart:
+* JSON Format:
 ```
 {
 "fuel": “DIESEL”,
