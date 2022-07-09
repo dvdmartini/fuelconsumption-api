@@ -1,6 +1,6 @@
 package com.fuelconsumption.management.controllers;
 
-import com.fuelconsumption.management.dtos.FuelConsumptionDto;
+import com.fuelconsumption.management.controllers.dtos.FuelConsumptionDto;
 import com.fuelconsumption.management.models.FuelConsumptionModel;
 import com.fuelconsumption.management.services.FuelConsumptionService;
 import org.springframework.beans.BeanUtils;
@@ -32,14 +32,12 @@ public class FuelConsumptionController {
 
     @PostMapping
     public ResponseEntity<Object> saveFuelConsumption(@RequestBody @Valid FuelConsumptionDto fuelConsumptionDto) {
-
         FuelConsumptionModel fuelConsumptionModel = new FuelConsumptionModel();
         BeanUtils.copyProperties(fuelConsumptionDto, fuelConsumptionModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(fuelConsumptionService.save(fuelConsumptionModel));
 
     }
 
-    //Total spent amount of money, fuel type and volume grouped by month
     @GetMapping("/get-all-fuel")
     public ResponseEntity<Object> getAllFuelAndGroupByMonth(){
         return ResponseEntity.status(HttpStatus.OK).body(fuelConsumptionService.findAllByFuelType());

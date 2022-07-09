@@ -1,7 +1,8 @@
-package com.fuelconsumption.management.dtos;
+package com.fuelconsumption.management.controllers.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fuelconsumption.management.enums.FuelTypeEnum;
+import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 /**
  * @author david.martini
  */
+@Data
 public class FuelConsumptionDto {
 
     @NotNull(message = "Required FuelType")
